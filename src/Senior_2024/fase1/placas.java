@@ -53,10 +53,9 @@ public class placas {
 			
 			return 2;
 		}
-		
-		if (placa.length() != 8 && placa.length() != 7 ) return 0;
-		return 0;
-	}
+
+        return 0;
+    }
 	
 	
 	
