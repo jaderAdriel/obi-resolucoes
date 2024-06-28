@@ -1,4 +1,4 @@
-package Senior_2021.fase2;
+//package Senior_2021.fase2;
 
 import java.util.*;
 
@@ -25,26 +25,22 @@ public class senha {
         int p = sc.nextInt();
         p--;
 
-        String password = "";
-
         String[] rightReplace = new String[m];
 
-        int d = 1;
         for (int i = m - 1; i >= 0; i--) {
+            int x = p % s;
             p = p / s;
-            rightReplace[i] = words.get(i).get(p % s);
+            rightReplace[i] = words.get(i).get(x);
         }
 
         int j = 0;
         for (int i = 0; i < n; i++) {
             char letter = passString.charAt(i);
             if (letter == '#') {
-                password = password.concat(rightReplace[j]); j++;
+                System.out.print(rightReplace[j]);; j++;
             } else {
-                password = password.concat(String.valueOf(letter));
+                System.out.print(letter);
             }
         }
-
-        System.out.println(password);
     }
 }
