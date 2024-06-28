@@ -9,15 +9,13 @@ public class senha {
         int n = sc.nextInt(), m = sc.nextInt(), s = sc.nextInt();
 
         List<List<String>> words = new ArrayList<>();
-
         String passString = sc.next();
-
 
         for (int i = 0; i < m; i++) {
             String word = sc.next();
             List<String> letterList = new ArrayList<>();
 
-            for (int j = 0; j < word.length(); j++) {
+            for (int j = 0; j < s; j++) {
                 letterList.add(Character.toString(word.charAt(j)));
             }
             Collections.sort(letterList);
@@ -25,47 +23,28 @@ public class senha {
         }
 
         int p = sc.nextInt();
+        p--;
 
-        List<String> replacePossibilities = generateCombinations(words, p);
-        String rightWord = replacePossibilities.get(p - 1);
+        String password = "";
 
-        System.out.println(rightWord);
+        String[] rightReplace = new String[m];
 
-        List<String> digits = new ArrayList<>();
-        int c = 0;
+        int d = 1;
+        for (int i = m - 1; i >= 0; i--) {
+            p = p / s;
+            rightReplace[i] = words.get(i).get(p % s);
+        }
+
+        int j = 0;
         for (int i = 0; i < n; i++) {
-            if (passString.charAt(i) == '#') {
-                digits.add(String.valueOf(rightWord.charAt(c)));
-                c++;
+            char letter = passString.charAt(i);
+            if (letter == '#') {
+                password = password.concat(rightReplace[j]); j++;
             } else {
-                digits.add(String.valueOf(passString.charAt(i)));
+                password = password.concat(String.valueOf(letter));
             }
         }
 
-        String password = digits.stream().reduce("" , String::concat);
         System.out.println(password);
-    }
-
-    public static List<String> generateCombinations(List<List<String>> lists, int limit) {
-        List<String> combinations = new ArrayList<>();
-        combine(lists, 0, "", combinations, limit);
-        Collections.sort(combinations);
-        return combinations;
-    }
-
-    public static void combine(List<List<String>> lists, int index, String currentCombination, List<String> combinations, int limit) {
-
-        if (combinations.size() == limit) return;
-
-        if (index == lists.size()) {
-            combinations.add(currentCombination);
-            return;
-        }
-
-        List<String> list = lists.get(index);
-
-        for (String letter : list) {
-            combine(lists, index+1, currentCombination+letter, combinations, limit);
-        }
     }
 }
