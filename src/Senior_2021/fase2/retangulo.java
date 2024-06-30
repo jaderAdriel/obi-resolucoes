@@ -24,12 +24,12 @@ public class retangulo {
         for (int i = 0; i < archList.length; i++) {
             int[] verticesA = new int[]{i,i};
 
-            int x = ( i + 2 >= archList.length) ? 0 : i+2;
+            int x = ( i + 1 >= archList.length) ? 0 : i+1;
 
             for (int j = x; j < archList.length - 1; j++) {
-                verticesA[1] = i;
-                x = ( i + 2 >= archList.length) ? 0 : i+2;
-                appearsRectangle = check(archList,verticesA, x, circumference);
+                verticesA[1] = j - 1;
+                int temp = ( j + 1 >= archList.length) ? 0 : j+1;
+                appearsRectangle = check(archList,verticesA, temp, circumference);
                 if (appearsRectangle) break;
             }
 
@@ -46,13 +46,15 @@ public class retangulo {
             int[] verticesB = new int[]{j,j};
             int verticesBLength = getVerticesLength(archList, verticesB);
 
-            if (archList[j] == verticesALength) {
+            if (verticesBLength == verticesALength) {
                 appearsRectangle = hasEqualDistance(archList, verticesA, verticesB, verticesALength, verticesBLength, circumference);
                 if (appearsRectangle) return true;
             }
 
-            verticesBLength = 0;
-            int y = j;
+            if (verticesALength < verticesBLength) continue;
+
+            int y = verticesB[1];
+            verticesBLength -= archList[verticesB[1]];
             while (y + 1 != verticesA[0] && y + 1 != verticesA[1] && verticesBLength < verticesALength) {
                 if (y >= archList.length) {
                     y = 0;
@@ -61,6 +63,7 @@ public class retangulo {
                 verticesBLength += archList[y];
 
                 if (verticesBLength == verticesALength ) {
+                    verticesB[1] = y;
                     appearsRectangle = hasEqualDistance(archList, verticesA, verticesB, verticesALength, verticesBLength, circumference);
                     if (appearsRectangle) return true;
                 }
@@ -85,7 +88,7 @@ public class retangulo {
                 inverted = true;
                 continue;
             }
-            sum = archList[i];
+            sum += archList[i];
             i++;
 
             if (vertices[0] == vertices[1]) break;
@@ -95,6 +98,11 @@ public class retangulo {
 
     public static boolean hasEqualDistance(int[] archList, int[] verticesA, int[] verticesB, int verticesALength, int verticesBLength,int circumference) {
         int x = verticesA[1] + 1;
+
+        if (Math.abs(verticesA[0] - verticesA[1]) > Math.abs(verticesB[0] - verticesB[1])) {
+            x = verticesB[1] + 1;
+        }
+
         if (x >= archList.length) {
             x -= archList.length;
             if (x == verticesA[0] || x == verticesA[0] + 1) return false;
